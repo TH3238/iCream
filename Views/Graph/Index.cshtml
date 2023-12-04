@@ -1,0 +1,121 @@
+﻿@model IEnumerable<dynamic>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Graph</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css">
+</head>
+<body>
+
+    <h2>Graph</h2>
+
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <form method="get" style="margin-top: 20px;">
+        <label for="iceCreamSelect">Select Ice Cream:</label>
+        <select id="iceCreamSelect" name="selectedIceCream" onchange="this.form.submit()">
+            <option value="">All Ice Creams</option>
+            @foreach (var iceCream in ViewBag.IceCreamList)
+            {
+                @:<option value="@iceCream" @(ViewBag.SelectedIceCream == iceCream ? "selected" : "")>@iceCream</option>
+            }
+        </select>
+    </form>
+
+    <canvas id="iceCreamChart" width="400" height="200" style="margin-top: 20px;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+    <script>
+        // Total Graph
+        var rawDates = @Html.Raw(Json.Serialize(Model.Select(item => item.Date.ToString("yyyy-MM-dd"))));
+        var rawTotals = @Html.Raw(Json.Serialize(Model.Select(item => item.Total)));
+
+        // Combine totals for the same date
+        var combinedData = {};
+        for (var i = 0; i < rawDates.length; i++) {
+            var date = rawDates[i];
+            var total = rawTotals[i];
+
+            if (combinedData.hasOwnProperty(date)) {
+                combinedData[date] += total;
+            } else {
+                combinedData[date] = total;
+            }
+        }
+
+        var uniqueDates = Object.keys(combinedData);
+        var aggregatedTotals = uniqueDates.map(function(date) {
+            return combinedData[date];
+        });
+
+        var totalCtx = document.getElementById('myChart').getContext('2d');
+        var totalChart = new Chart(totalCtx, {
+            type: 'line',
+            data: {
+                labels: uniqueDates,
+                datasets: [{
+                    label: 'Aggregated Total',
+                    data: aggregatedTotals,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    
+    // Ice Cream Graph
+// Ice Cream Graph
+var iceCreamData = @Html.Raw(Json.Serialize(Model.Where(item => item.IceCreamCount > 0).Select(item => new { Date = item.Date.ToString("yyyy-MM-dd"), Count = item.IceCreamCount })));
+
+var iceCreamDates = iceCreamData.map(item => item.Date);
+var iceCreamCounts = iceCreamData.map(item => item.Count);
+
+var iceCreamCtx = document.getElementById('iceCreamChart').getContext('2d');
+var iceCreamChart = new Chart(iceCreamCtx, {
+    type: 'line',
+    data: {
+        labels: iceCreamDates,
+        datasets: [{
+            label: 'Ice Cream Count',
+            data: iceCreamCounts,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: false
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'day'
+                }
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>PayPal Integration</title>
+</head>
+<body>
+
+    <!-- Step 2: Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AbFh3ewmTuLvUejaoGkKcRN8fWEVdv9BWDpdxeXe-M0Mgyf_vDJoDV5y-zbKhRmbQ8m_rAYQb9Fx1rG2&currency=USD"></script>
+
+    <!-- Step 3: Create a Container for Your Payment Button -->
+    <div id="paypal-button-container"></div>
+
+    <!-- Step 4: Initialize the PayPal Button -->
+    <script>
+        paypal.Buttons({
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '10.00' // Replace with the amount you want to charge
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    // Payment is successful; you can display a success message or perform other actions here.
+                    alert('Transaction completed by ' + details.payer.name.given_name);
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+
+</body>
+</html>

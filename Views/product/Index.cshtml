@@ -1,0 +1,231 @@
+﻿@model IEnumerable<ICream.Models.ICreamList>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Header Start -->
+<div class="jumbotron jumbotron-fluid page-header" style="margin-bottom: 90px;">
+    <div class="container text-center py-5">
+        <h1 class="text-white display-3 mt-lg-5">Product</h1>
+        <div class="d-inline-flex align-items-center text-white">
+            <p class="m-0"><a class="text-white" href="">Home</a></p>
+            <i class="fa fa-circle px-3">Product</i>
+            <p class="m-0"> </p>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Products Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h1 class="section-title position-relative text-center mb-5">Best Prices We Offer For Ice Cream Lovers</h1>
+            </div>
+        </div>
+
+        @{
+            decimal total = 0; // Initialize the total variable
+        }
+
+
+        @{
+            List<string> selectedIceCreams = new List<string>();
+        }
+
+      
+        <div class="row">
+           
+            @foreach (var iceCream in Model)
+            {
+
+
+                <div class="col-lg-3 col-md-6 mb-4 pb-2">
+                    <div class="product-item d-flex flex-column align-items-center text-center bg-light rounded py-5 px-3">
+                        <div class="bg-primary mt-n5 py-3" style="width: 80px;">
+                            <h4 class="font-weight-bold text-white mb-0">@iceCream.Price</h4>
+                        </div>
+                        <div class="position-relative bg-primary rounded-circle mt-n3 mb-4 p-3" style="width: 150px; height: 150px;">
+                            <img class="rounded-circle w-100 h-100" src="@iceCream.Image" style="object-fit: cover;">
+                        </div>
+                        <h5 class="font-weight-bold mb-4">@iceCream.Description</h5>
+                        <button type="button" class="btn btn-sm btn-secondary addToCart" data-id="@iceCream.Description" data-price="@iceCream.Price" data-description="@iceCream.Description">Add To Cart</button>
+
+                    </div>
+                </div>
+            }
+        </div>
+        
+    </div>
+    
+    
+  @*   <!-- Display the total -->
+    <div class="col-12 text-center">
+        <div class="btn btn-primary py-3 px-5" id="total">Total: @total</div>
+    
+    <!--Checkout btn-->
+        <a id="checkoutButton" class="btn btn-primary py-3 px-5">Proceed to Checkout</a> *@
+
+    <!-- Display the shopping cart -->
+    <div class="col-12 text-center">
+        <h2 class="mb-4">Shopping Cart</h2>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-total">
+            <div class="btn btn-primary py-3 px-5" id="total">Total: $0.00</div>
+            <a id="checkoutButton" class="btn btn-primary py-3 px-5">Proceed to Checkout</a>
+        </div>
+    </div>
+
+    <style>
+        /* Styles for the shopping cart */
+        .cart-items {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .quantity {
+            margin: 0 10px;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+        }
+
+        /* Additional styles for individual cart items */
+        .ice-cream-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ice-cream-name {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .control-button {
+            margin: 0 5px;
+        }
+    </style>
+
+
+
+    </div>
+
+
+<!-- Products End -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        var cartItems = {};
+        var selectedIceCreams = [];
+
+        $(".addToCart").click(function () {
+            var price = parseFloat($(this).data("price"));
+            var description = $(this).data("description");
+            total += price;
+
+            if (cartItems.hasOwnProperty(description)) {
+                cartItems[description].quantity += 1;
+            } else {
+                cartItems[description] = {
+                    price: price,
+                    quantity: 1
+                };
+            }
+
+            selectedIceCreams.push(description);
+            updateCartItems();
+            updateTotal();
+        });
+
+        $("#cartItems").on("click", ".increaseQuantity", function () {
+            var description = $(this).data("description");
+            cartItems[description].quantity += 1;
+            total += cartItems[description].price;
+            updateCartItems();
+            updateTotal();
+            updateSelectedIceCreams(); // Add this line
+        });
+
+        $("#cartItems").on("click", ".decreaseQuantity", function () {
+            var description = $(this).data("description");
+            cartItems[description].quantity -= 1;
+
+            if (cartItems[description].quantity === 0) {
+                total -= cartItems[description].price;
+                delete cartItems[description];
+            } else {
+                total -= cartItems[description].price;
+            }
+
+            updateCartItems();
+            updateTotal();
+            updateSelectedIceCreams(); // Add this line
+        });
+
+
+        $("#checkoutButton").click(function () {
+            proceedToCheckout();
+        });
+
+        function updateCartItems() {
+            var cartHtml = "";
+            for (var key in cartItems) {
+                if (cartItems.hasOwnProperty(key)) {
+                    var item = cartItems[key];
+                    cartHtml += "<div class='cart-item'>";
+                    cartHtml += "<div class='ice-cream-info'>";
+                    cartHtml += "<span class='ice-cream-name'>" + key + "</span>";
+                    cartHtml += "<span class='individual-price'>$" + (item.price * item.quantity).toFixed(2) + "</span>";
+                    cartHtml += "<div class='quantity-controls'>";
+                    cartHtml += "<button class='btn btn-sm btn-primary increaseQuantity' data-description='" + key + "'>+</button>";
+                    cartHtml += "<span class='quantity'>" + item.quantity + "</span>";
+                    cartHtml += "<button class='btn btn-sm btn-primary decreaseQuantity' data-description='" + key + "'>-</button>";
+                    cartHtml += "</div>";
+                    cartHtml += "</div>";
+                    cartHtml += "</div>";
+                }
+            }
+            $("#cartItems").html(cartHtml);
+        }
+
+        function updateTotal() {
+            $("#total").text("Total: $" + total.toFixed(2));
+        }
+
+        function proceedToCheckout() {
+            var iceCreamsJson = JSON.stringify(selectedIceCreams);
+            var checkoutUrl = "/OrderDetails/Create?total=" + total.toFixed(2) + "&iceCreams=" + encodeURIComponent(iceCreamsJson);
+            window.location.href = checkoutUrl;
+        }
+
+        function updateSelectedIceCreams() {
+            selectedIceCreams = [];
+            for (var key in cartItems) {
+                if (cartItems.hasOwnProperty(key)) {
+                    for (var i = 0; i < cartItems[key].quantity; i++) {
+                        selectedIceCreams.push(key);
+                    }
+                }
+            }
+        }
+
+    });
+</script>
+

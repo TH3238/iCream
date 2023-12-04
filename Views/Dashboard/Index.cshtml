@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/admin.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Dashboard</title>
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top:20px;
+            margin-left: 273px;
+            max-width: 18cm; /* Adjust the max-width based on your layout */
+        }
+
+        .dashboard-square {
+            background-color: white;
+            border: 2px solid #F195B2;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: border 0.3s, font-weight 0.3s;
+            width: 5cm; /* Adjust the width of each square */
+            height: 6cm;
+            box-sizing: border-box;
+            position: relative;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .dashboard-container:hover .dashboard-square {
+            border: 2px solid #F195B2;
+            font-weight: bold;
+        }
+
+        .dashboard-title {
+            color: #62C3E7;
+            margin-bottom: 10px;
+            transition: font-weight 0.3s;
+        }
+
+        .dashboard-container:hover .dashboard-title {
+            font-weight: bold;
+        }
+
+        .dashboard-icon {
+            width: 115px;
+            height: 115px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-square:hover {
+            border: 2px solid #F195B2;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- First Row -->
+        <a href="@Url.Action("Index", "Graph")" class="dashboard-square">
+            <h3 class="dashboard-title">Statistics</h3>
+            <img src="~/img/pie-chart.png" alt="Statistics" class="dashboard-icon">
+        </a>
+
+        <a href="@Url.Action("Index", "LiveOrders")" class="dashboard-square">
+            <h3 class="dashboard-title">Live Orders</h3>
+            <img src="~/img/shipped.png" alt="Live Orders" class="dashboard-icon">
+        </a>
+
+        <a href="@Url.Action("Index", "ContactM")" class="dashboard-square">
+            <h3 class="dashboard-title">Messages</h3>
+            <img src="~/img/notification.png" alt="Messages" class="dashboard-icon">
+        </a>
+
+        <!-- Second Row -->
+        <a href="@Url.Action("Index", "ICreamLists")" class="dashboard-square">
+            <h3 class="dashboard-title">Products</h3>
+            <img src="~/img/ice-cream.png" alt="Products" class="dashboard-icon">
+        </a>
+
+        <a href="@Url.Action("Index", "OrderDetails")" class="dashboard-square">
+            <h3 class="dashboard-title">Past Orders</h3>
+            <img src="~/img/clipboard.png" style="width: 100px; height: 100px;" alt="Past Orders" class="dashboard-icon">
+        </a>
+
+        <a href="@Url.Action("Index", "Index")" class="dashboard-square">
+            <h3 class="dashboard-title">Website</h3>
+            <img src="~/img/ice-cream-shop.png"  alt="Website" class="dashboard-icon">
+        </a>
+    </div>
+</body>
+</html>

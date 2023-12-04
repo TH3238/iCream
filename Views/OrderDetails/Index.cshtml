@@ -1,0 +1,128 @@
+﻿@model IEnumerable<ICream.Models.OrderDetails>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/admin.cshtml";
+    var orderedItems = Model.OrderByDescending(item => item.Id);
+
+}
+
+</br>
+@using (Html.BeginForm("Index", "OrderDetails", FormMethod.Get))
+{
+    <div style="margin-left:4px">
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" id="startDate" value="@ViewBag.StartDate" />
+
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" id="endDate" value="@ViewBag.EndDate" />
+
+        <label for="searchTerm">Search:</label>
+        <input type="text" name="searchTerm" id="searchTerm" value="@ViewBag.SearchTerm" placeholder="Name / Phone / Email" />
+
+        <input type="submit" value="Filter" />
+    </div>
+}
+
+
+<p style="margin-left:4px">
+    <a asp-action="Create">Create New Order</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HebDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Holiday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weather)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IceCreams)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in orderedItems)
+        {
+            
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HebDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Day)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Holiday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weather)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IceCreams)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

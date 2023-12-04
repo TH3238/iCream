@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Delivery Form</title>
+    <style>
+        /* Custom CSS styles */
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .side-panel {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+            .side-panel h4 {
+                margin-bottom: 10px;
+            }
+
+        .total-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .btn-pay {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-pay:hover {
+                background-color: #0056b3;
+            }
+
+        /* Custom CSS for layout */
+        .form-group.inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+            .form-group.inline .input-group {
+                flex: 1;
+                margin-right: 10px; /* Add space between fields */
+            }
+
+            .form-group.inline .form-control {
+                border-radius: 0;
+                font-size: 14px; /* Make font size smaller */
+            }
+
+                .form-group.inline .form-control::placeholder {
+                    font-size: 14px; /* Make placeholder font size smaller */
+                }
+
+        /* Custom CSS for summary section */
+        .summary {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+            .summary h5 {
+                font-weight: bold;
+            }
+
+        .summary-divider {
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .make-purchase-button {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+            .make-purchase-button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-7 left-side">
+                <!-- Adjust the width as needed -->
+                <form id="delivery-form">
+                    <h3>Delivery Information</h3>
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="street" name="street" placeholder="Street" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="apartment" name="apartment" placeholder="Apt" style="width: 60px;" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5">
+                <div class="side-panel">
+                    <h4>Summary</h4>
+                    <div class="summary-divider"></div>
+                    <p>Products:  &#8362;80.00</p>
+                    <p>Shipping: Gratis</p>
+                    <div class="summary-divider"></div>
+                    <h4>
+                        Total amount (including VAT): &#8362;100.00
+                    </h4>
+                    <button class="btn make-purchase-button btn-block">MAKE PURCHASE</button>
+                   
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
